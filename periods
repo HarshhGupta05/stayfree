@@ -1,0 +1,332 @@
+XOR
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity XOR_Gate is
+    Port ( A : in STD_LOGIC;
+           B : in STD_LOGIC;
+           Y : out STD_LOGIC);
+end XOR_Gate;
+
+architecture Behavioral of XOR_Gate is
+begin
+    Y <= A XOR B;
+end Behavioral;
+
+
+OR
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity OR_Gate is
+    Port ( A : in STD_LOGIC;
+           B : in STD_LOGIC;
+           Y : out STD_LOGIC);
+end OR_Gate;
+
+architecture Behavioral of OR_Gate is
+begin
+    Y <= A OR B;
+end Behavioral;
+
+
+AND
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity AND_Gate is
+    Port ( A : in STD_LOGIC;
+           B : in STD_LOGIC;
+           Y : out STD_LOGIC);
+end AND_Gate;
+
+architecture Behavioral of AND_Gate is
+begin
+    Y <= A AND B;
+end Behavioral;
+
+
+Implementation of Half Adder circuit using structural modelling of architecture
+design.
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity and_gate is
+    port ( i1, i2: in STD_LOGIC;
+           o1: out STD_LOGIC);
+end and_gate;
+
+architecture hp of and_gate is
+begin
+    o1 <= i1 AND i2;
+end hp;
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity xor_gate is
+    port ( i1, i2: in STD_LOGIC;
+           o1: out STD_LOGIC);
+end xor_gate;
+
+architecture hp of xor_gate is
+begin
+    o1 <= i1 XOR i2;
+end hp;
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity half_adder is
+    port ( a, b: in STD_LOGIC;
+           sum, carry_out: out STD_LOGIC);
+end half_adder;
+
+architecture structure of half_adder is
+    -- Component declaration for XOR gate
+    component xor_gate --same as the file/entity name of the xor gate program
+        port ( i1, i2: in STD_LOGIC;
+               o1: out STD_LOGIC);
+    end component;
+
+    -- Component declaration for AND gate
+    component and_gate
+        port ( i1, i2: in STD_LOGIC;
+               o1: out STD_LOGIC);
+    end component;
+
+begin
+    -- Using the XOR gate for the Sum
+    u1: xor_gate port map (i1 => a, i2 => b, o1 => sum);
+
+    -- Using the AND gate for Carry
+    u2: and_gate port map (i1 => a, i2 => b, o1 => carry_out);
+
+    -- We can also use positional association:
+    -- u1: xor_gate port map (a, b, sum);
+    -- u2: and_gate port map (a, b, carry_out);
+
+end structure;
+
+
+
+Half Subtractor
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity not_gate is
+    port ( i1: in STD_LOGIC;
+           o1: out STD_LOGIC);
+end not_gate;
+
+architecture hp of not_gate is
+begin
+    o1 <= NOT i1;
+end hp;
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity and_gate is
+    port ( i1, i2: in STD_LOGIC;
+           o1: out STD_LOGIC);
+end and_gate;
+
+architecture hp of and_gate is
+begin
+    o1 <= i1 AND i2;
+end hp;
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity xor_gate is
+    port ( i1, i2: in STD_LOGIC;
+           o1: out STD_LOGIC);
+end xor_gate;
+
+architecture hp of xor_gate is
+begin
+    o1 <= i1 XOR i2;
+end hp;
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity half_subtractor is
+    port ( a, b: in STD_LOGIC;
+           difference, borrow: out STD_LOGIC);
+end half_subtractor;
+
+architecture structure of half_subtractor is
+    -- Component declaration for XOR gate (Difference)
+    component xor_gate
+        port ( i1, i2: in STD_LOGIC;
+               o1: out STD_LOGIC);
+    end component;
+
+    -- Component declaration for NOT gate (Negation of A for Borrow)
+    component not_gate
+        port ( i1: in STD_LOGIC;
+               o1: out STD_LOGIC);
+    end component;
+
+    -- Component declaration for AND gate (Borrow)
+    component and_gate
+        port ( i1, i2: in STD_LOGIC;
+               o1: out STD_LOGIC);
+    end component;
+
+    -- Internal signal for NOT A
+    signal not_a: STD_LOGIC;
+
+begin
+    -- Using XOR gate for Difference
+    u1: xor_gate port map (i1 => a, i2 => b, o1 => difference);
+
+    -- Inverting A using NOT gate
+    u2: not_gate port map (i1 => a, o1 => not_a);
+
+    -- Using AND gate to get Borrow (NOT A AND B)
+    u3: and_gate port map (i1 => not_a, i2 => b, o1 => borrow);
+
+    -- We can also use positional association:
+    -- u1: xor_gate port map (a, b, difference);
+    -- u2: not_gate port map (a, not_a);
+    -- u3: and_gate port map (not_a, b, borrow);
+
+end structure;
+
+4:1 mux using 2:1
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity MUX_2to1 is
+    Port ( A : in STD_LOGIC;
+           B : in STD_LOGIC;
+           Sel : in STD_LOGIC;
+           Y : out STD_LOGIC);
+end MUX_2to1;
+
+architecture Behavioral of MUX_2to1 is
+begin
+    Y <= (A AND NOT Sel) OR (B AND Sel);
+end Behavioral;
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity MUX_4to1 is
+    Port ( A : in STD_LOGIC;
+           B : in STD_LOGIC;
+           C : in STD_LOGIC;
+           D : in STD_LOGIC;
+           Sel : in STD_LOGIC_VECTOR (1 downto 0);
+           Y : out STD_LOGIC);
+end MUX_4to1;
+
+architecture Structural of MUX_4to1 is
+    -- Component Declaration for 2:1 MUX
+    component MUX_2to1
+        Port ( A : in STD_LOGIC;
+               B : in STD_LOGIC;
+               Sel : in STD_LOGIC;
+               Y : out STD_LOGIC);
+    end component;
+
+    -- Internal signals for connecting MUXes
+    signal Y1, Y2 : STD_LOGIC;
+
+begin
+    -- First level: Two 2:1 MUXes
+    MUX1: MUX_2to1 port map (A => A, B => B, Sel => Sel(0), Y => Y1);
+    MUX2: MUX_2to1 port map (A => C, B => D, Sel => Sel(0), Y => Y2);
+
+    -- Second level: Final 2:1 MUX
+    MUX3: MUX_2to1 port map (A => Y1, B => Y2, Sel => Sel(1), Y => Y);
+end Structural;
+
+
+Normal 4:1
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity MUX_4to1 is
+    port ( Sel : in STD_LOGIC_VECTOR(1 downto 0);
+           A, B, C, D : in STD_LOGIC;
+           Y : out STD_LOGIC);
+end MUX_4to1;
+
+architecture Behavioral of MUX_4to1 is
+begin
+    process (Sel, A, B, C, D)
+    begin
+        if (Sel = "00") then
+            Y <= A;
+        elsif (Sel = "01") then
+            Y <= B;
+        elsif (Sel = "10") then
+            Y <= C;
+        else
+            Y <= D;
+        end if;
+    end process;
+end Behavioral;
+
+
+Verilog
+and
+module and_gate (
+    input wire A, B,
+    output wire Y
+);
+    assign Y = A & B;  // AND operation
+endmodule
+
+not
+module not_gate_d(a,y);
+input a;
+output y;
+
+assign y = ~a;
+                
+endmodule
+
+and
+module and_gate_d(a,b,y);
+input a,b;
+output y;
+
+assign y = a & b;
+                
+endmodule
+
+xor
+module xor_gate_d(a,b,y);
+input a,b;
+output y;
+
+assign y = a ^ b;
+                
+endmodule
+
+full adder verilog
+module full_adder (
+    input wire A, B, Cin,
+    output reg Sum, Cout
+);
+
+    always @(*) begin
+        {Cout, Sum} = A + B + Cin;  // Behavioral: Adding three bits
+    end
+
+endmodule
+
